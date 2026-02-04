@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentine 💘</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-pink-50">
+
+  <div id="app" class="text-center relative"></div>
+
+  <script>
+    let noCount = 0;
+    const phrases = [
+      "No",
+      "Are you sure baby?",
+      "Really sure Jaan?",
+      "Think again Motubaby!",
+      "Last chance.. Dekh lo!",
+      "You're breaking my heart Wifey 💔",
+    ];
+
+    const app = document.getElementById("app");
+
+    function render() {
+      app.innerHTML = `
+        <img class="h-56 mx-auto rounded-xl shadow-lg"
+          src="https://gifdb.com/images/high/cute-love-bear-roses-ou7zho5oosxnpo6k.webp" />
+
+        <h1 class="text-4xl my-6 font-bold">
+          Will you be my Valentine Jaan? 💘
+        </h1>
+
+        <div class="flex justify-center gap-4">
+          <button
+            onclick="alert('Huehue 💖')"
+            style="font-size:${16 + noCount * 6}px"
+            class="bg-green-500 text-white px-6 py-2 rounded-xl font-bold">
+            Yes
+          </button>
+
+          <button
+            onclick="noClick()"
+            class="bg-rose-500 text-white px-6 py-2 rounded-xl font-bold">
+            ${phrases[Math.min(noCount, phrases.length - 1)]}
+          </button>
+        </div>
+      `;
+    }
+
+    function noClick() {
+      noCount++;
+      render();
+    }
+
+    render();
+  </script>
+</body>
+</html>
