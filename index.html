@@ -5,23 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Valentine 💘</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+    .float {
+      position: fixed;
+      font-size: 3rem;
+      animation: floatUp 3s linear forwards;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-300px) scale(1.8); opacity: 0; }
+    }
+  </style>
 </head>
-<body class="min-h-screen flex items-center justify-center bg-pink-50">
 
-  <div id="app" class="text-center relative"></div>
+<body class="min-h-screen flex items-center justify-center bg-pink-50 overflow-hidden">
+
+  <canvas id="fireworks"></canvas>
+  <div id="app" class="text-center relative z-10"></div>
 
   <script>
     let noCount = 0;
+    let celebrated = false;
+
     const phrases = [
       "No",
       "Are you sure baby?",
       "Really sure Jaan?",
       "Think again Motubaby!",
       "Last chance.. Dekh lo!",
-      "You're breaking my heart Wifey 💔",
+      "You're breaking my heart 💔",
     ];
 
     const app = document.getElementById("app");
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
 
     function render() {
       app.innerHTML = `
@@ -29,12 +54,12 @@
           src="https://gifdb.com/images/high/cute-love-bear-roses-ou7zho5oosxnpo6k.webp" />
 
         <h1 class="text-4xl my-6 font-bold">
-          Will you be my Valentine Jaan? 💘
+          Will you be my Valentine? 💘
         </h1>
 
         <div class="flex justify-center gap-4">
           <button
-            onclick="alert('Huehue 💖')"
+            onclick="yesClick()"
             style="font-size:${16 + noCount * 6}px"
             class="bg-green-500 text-white px-6 py-2 rounded-xl font-bold">
             Yes
@@ -52,6 +77,47 @@
     function noClick() {
       noCount++;
       render();
+    }
+
+    function yesClick() {
+      if (celebrated) return;
+      celebrated = true;
+
+      app.innerHTML = `
+        <h1 class="text-5xl font-extrabold mb-6">YAYYYYY!!! 💖💖💖</h1>
+        <img class="mx-auto"
+          src="https://media.tenor.com/gUiu1zyxfzYAAAAi/bear-kiss-bear-kisses.gif"/>
+      `;
+
+      startFireworks();
+      explodeLove();
+    }
+
+    // 💥 FIREWORKS
+    function startFireworks() {
+      setInterval(() => {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * canvas.height / 2;
+        for (let i = 0; i < 40; i++) {
+          ctx.fillStyle = `hsl(${Math.random() * 360},100%,60%)`;
+          ctx.beginPath();
+          ctx.arc(x + Math.random() * 100 - 50, y + Math.random() * 100 - 50, 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }, 400);
+    }
+
+    // 💖 HEARTS & 😘 KISSES
+    function explodeLove() {
+      setInterval(() => {
+        const el = document.createElement("div");
+        el.className = "float";
+        el.innerText = Math.random() > 0.5 ? "💖" : "😘";
+        el.style.left = Math.random() * 100 + "vw";
+        el.style.bottom = "0px";
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 3000);
+      }, 150);
     }
 
     render();
